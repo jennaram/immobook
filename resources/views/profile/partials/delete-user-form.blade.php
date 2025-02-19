@@ -1,4 +1,16 @@
-<section class="space-y-6">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immobook</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        @yield('content')
+    </div>
+    <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Delete Account') }}
@@ -53,3 +65,7 @@
         </form>
     </x-modal>
 </section>
+
+</body>
+</html>
+

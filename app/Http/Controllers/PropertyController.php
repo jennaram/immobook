@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Property; // Assurez-vous d'importer le modèle Property
+use App\Models\Property;
 use Illuminate\Http\Request;
 
 class PropertyController extends Controller
@@ -12,8 +12,8 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::all(); // Récupère toutes les propriétés
-        return view('properties.index', compact('properties')); // Retourne la vue avec les propriétés
+        $properties = Property::paginate(10); // Pagination pour améliorer les performances
+        return view('properties.index', compact('properties'));
     }
 
     /**
@@ -21,7 +21,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        return view('properties.create'); // Retourne la vue du formulaire de création
+        return view('properties.create');
     }
 
     /**
@@ -29,13 +29,20 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        // Valider les données du formulaire
+        // Validation des données (ajoutez les règles pour tous les champs)
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string', // Exemple : description peut être nulle
+            'price_per_night' => 'required|numeric|min:0', // Exemple : prix doit être un nombre positif
+            'address' => 'nullable|string',
+            'city' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'country' => 'nullable|string',
+            'rooms' => 'nullable|integer|min:0',
+            'surface' => 'nullable|numeric|min:0',
             // ... autres champs ...
         ]);
 
-        // Créer et enregistrer la propriété
         Property::create($request->all());
 
         return redirect()->route('properties.index')
@@ -45,31 +52,38 @@ class PropertyController extends Controller
     /**
      * Affiche les détails d'une propriété spécifique.
      */
-    public function show(Property $property)
+    public function show(Property $property) // Utilisation de la résolution implicite de modèle
     {
-        return view('properties.show', compact('property')); // Retourne la vue avec les détails de la propriété
+        return view('properties.show', compact('property'));
     }
 
     /**
      * Affiche le formulaire de modification d'une propriété spécifique.
      */
-    public function edit(Property $property)
+    public function edit(Property $property) // Utilisation de la résolution implicite de modèle
     {
-        return view('properties.edit', compact('property')); // Retourne la vue du formulaire de modification
+        return view('properties.edit', compact('property'));
     }
 
     /**
      * Met à jour une propriété spécifique dans la base de données.
      */
-    public function update(Request $request, Property $property)
+    public function update(Request $request, Property $property) // Utilisation de la résolution implicite de modèle
     {
-        // Valider les données du formulaire
+        // Validation des données (ajoutez les règles pour tous les champs)
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price_per_night' => 'required|numeric|min:0',
+            'address' => 'nullable|string',
+            'city' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'country' => 'nullable|string',
+            'rooms' => 'nullable|integer|min:0',
+            'surface' => 'nullable|numeric|min:0',
             // ... autres champs ...
         ]);
 
-        // Mettre à jour la propriété
         $property->update($request->all());
 
         return redirect()->route('properties.index')
@@ -79,7 +93,7 @@ class PropertyController extends Controller
     /**
      * Supprime une propriété spécifique de la base de données.
      */
-    public function destroy(Property $property)
+    public function destroy(Property $property) // Utilisation de la résolution implicite de modèle
     {
         $property->delete();
 

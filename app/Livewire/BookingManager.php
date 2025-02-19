@@ -3,95 +3,85 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Property; // Import the Property model
-use App\Models\Booking; // Import the Booking model
-use Illuminate\Support\Facades\Validator; // For validation
+use App\Models\Property;
+use App\Models\Booking; // Importez le modèle Booking
+use Illuminate\Validation\Rule; // Pour les règles de validation uniques
 
 class BookingManager extends Component
 {
-    public $property_id;
-    public $start_date;
-    public $end_date;
-    public $num_guests = 1; // Default number of guests
-    public $availableProperties; // To store available properties
-    public $bookingSuccessful = false;
-    public $bookingMessage = '';
+    public Property $property;
+    public $bookings;
+    public $newBooking = []; // Pour le formulaire de création
+    public $editingBooking = null; // Pour le formulaire de modification
+    public $showCreateForm = false; // Pour afficher/masquer le formulaire de création
 
-    public function mount()
+    public function mount(Property $property)
     {
-        // Initialize available properties (you might want to refine this query)
-        $this->availableProperties = Property::all(); // Or a more specific query
+        $this->property = $property;
+        $this->loadBookings(); // Charger les réservations au montage du composant
     }
 
-
-    public function book()
+    public function loadBookings()
     {
-        $rules = [
-            'property_id' => 'required|exists:properties,id', // Check if property exists
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-            'num_guests' => 'required|integer|min:1',
+        $this->bookings = $this->property->bookings->load('user'); // Charger les réservations et l'utilisateur lié
+    }
+
+    public function createBooking()
+    {
+        $this->showCreateForm = true; // Afficher le formulaire de création
+        $this->newBooking = [
+            'property_id' => $this->property->id,
+            'check_in' => now()->format('Y-m-d'), // Date de début par défaut
+            'check_out' => now()->addDays(1)->format('Y-m-d'), // Date de fin par défaut (1 jour plus tard)
         ];
+    }
 
-        $messages = [
-            'property_id.required' => 'La propriété est requise.',
-            'property_id.exists' => 'La propriété sélectionnée n\'existe pas.',
-            'start_date.required' => 'La date de début est requise.',
-            'start_date.after_or_equal' => 'La date de début doit être aujourd\'hui ou après.',
-            'end_date.required' => 'La date de fin est requise.',
-            'end_date.after' => 'La date de fin doit être après la date de début.',
-            'num_guests.required' => 'Le nombre de personnes est requis.',
-            'num_guests.integer' => 'Le nombre de personnes doit être un nombre entier.',
-            'num_guests.min' => 'Le nombre de personnes doit être au minimum 1.',
-        ];
+    public function storeBooking()
+    {
+        $this->validate($this->newBooking, [
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'user_id' => 'required|exists:users,id',
+            // ... autres règles de validation ...
+        ]);
 
+        Booking::create($this->newBooking);
+        $this->loadBookings(); // Recharger les réservations après la création
+        $this->newBooking = []; // Réinitialiser le formulaire
+        $this->showCreateForm = false; // Masquer le formulaire
+        session()->flash('success', 'Réservation créée avec succès.'); // Message flash
+    }
 
-        $validator = Validator::make([
-            'property_id' => $this->property_id,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'num_guests' => $this->num_guests,
-        ], $rules, $messages);
+    public function editBooking(Booking $booking)
+    {
+        $this->editingBooking = $booking; // Définir la réservation à modifier
+    }
 
-        if ($validator->fails()) {
-            $this->dispatchBrowserEvent('booking-failed', ['errors' => $validator->errors()]);
-            return; // Stop execution if validation fails
-        }
+    public function updateBooking()
+    {
+        $this->validate($this->editingBooking, [
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
+            'user_id' => 'required|exists:users,id',
+            // ... autres règles de validation ...
+        ]);
+        $this->editingBooking->save();
+        $this->loadBookings(); // Recharger les réservations après la modification
+        $this->editingBooking = null; // Réinitialiser la variable d'édition
+        session()->flash('success', 'Réservation mise à jour avec succès.'); // Message flash
 
+    }
 
-        // Check for availability (this is a simplified example)
-        $existingBooking = Booking::where('property_id', $this->property_id)
-            ->whereBetween('start_date', [$this->start_date, $this->end_date])
-            ->orWhereBetween('end_date', [$this->start_date, $this->end_date])
-            ->exists();
+    public function deleteBooking(Booking $booking)
+    {
+        $booking->delete();
+        $this->loadBookings(); // Recharger les réservations après la suppression
+        session()->flash('success', 'Réservation supprimée avec succès.'); // Message flash
+    }
 
-        if ($existingBooking) {
-            $this->dispatchBrowserEvent('booking-failed', ['customMessage' => 'Cette propriété n\'est pas disponible aux dates sélectionnées.']);
-            return;
-        }
-
-
-        try {
-            // Create the booking
-            Booking::create([
-                'property_id' => $this->property_id,
-                'start_date' => $this->start_date,
-                'end_date' => $this->end_date,
-                'num_guests' => $this->num_guests,
-                // Add other booking details as needed (e.g., user_id)
-            ]);
-
-            $this->bookingSuccessful = true;
-            $this->bookingMessage = 'Réservation réussie !';
-            $this->reset(['property_id', 'start_date', 'end_date', 'num_guests']); // Clear the form
-
-            $this->dispatchBrowserEvent('booking-successful', ['message' => 'Réservation réussie !']);
-
-        } catch (\Exception $e) {
-            $this->dispatchBrowserEvent('booking-failed', ['customMessage' => 'Une erreur s\'est produite lors de la réservation. Veuillez réessayer.']);
-            // Log the error for debugging:
-            // Log::error($e);
-        }
+    public function cancelEdit()
+    {
+        $this->editingBooking = null; // Annuler la modification
     }
 
     public function render()

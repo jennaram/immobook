@@ -16,35 +16,55 @@
                         </a>
                     </div>
 
-                    <div class="mb-4">
-                        <h3 class="text-lg font-bold">{{ $property->name }}</h3>
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-indigo-600">{{ $property->name }}</h3>
                     </div>
 
-                    <div class="mb-4">
-                        <p class="text-gray-700">{{ $property->description }}</p>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                    <div class="mb-4">
-                        <p class="text-gray-700">Prix par nuit : {{ $property->price_per_night }}</p>
-                    </div>
-
-                    {{--  Ajouter d'autres détails ici si nécessaire --}}
-
-                    {{--  Exemple : Afficher les réservations liées à cette propriété --}}
-                    @if ($property->bookings->count() > 0)
-                        <div class="mt-6">
-                            <h4 class="text-md font-bold">Réservations</h4>
-                            <ul>
-                                @foreach ($property->bookings as $booking)
-                                    <li>
-                                        Du {{ $booking->check_in }} au {{ $booking->check_out }}
-                                        {{--  Ajouter d'autres détails de réservation --}}
-                                    </li>
-                                @endforeach
-                            </ul>
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Description :</strong> {{ $property->description ?? 'Non renseignée' }}</p>
                         </div>
-                    @endif
 
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $property->price_per_night ?? 'Non renseigné' }} €</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Adresse :</strong> {{ $property->address ?? 'Non renseignée' }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Ville :</strong> {{ $property->city ?? 'Non renseignée' }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Code postal :</strong> {{ $property->postal_code ?? 'Non renseigné' }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Pays :</strong> {{ $property->country ?? 'Non renseigné' }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Nombre de pièces :</strong> {{ $property->rooms ?? 'Non renseigné' }}</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700"><strong>Superficie :</strong> {{ $property->surface ?? 'Non renseignée' }} m²</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-700">
+                                <strong>Type de propriété :</strong> {{ $property->propertyType->name ?? 'Non renseigné' }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-6">  {{-- Ajout de la div pour le composant Livewire --}}
+                        @livewire('booking-manager', ['property' => $property])
+                    </div>
 
                 </div>
             </div>

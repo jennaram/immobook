@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking; // Assurez-vous d'importer le modèle Booking
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -12,8 +12,8 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::all(); // Récupère toutes les réservations
-        return view('bookings.index', compact('bookings')); // Retourne la vue avec les réservations
+        $bookings = Booking::paginate(10); // Pagination pour améliorer les performances
+        return view('bookings.index', compact('bookings'));
     }
 
     /**
@@ -21,7 +21,10 @@ class BookingController extends Controller
      */
     public function create()
     {
-        return view('bookings.create'); // Retourne la vue du formulaire de création
+        // Récupérer les propriétés et les utilisateurs pour les listes déroulantes
+        $properties = \App\Models\Property::all(); // Assurez-vous d'importer le modèle Property
+        $users = \App\Models\User::all(); // Assurez-vous d'importer le modèle User
+        return view('bookings.create', compact('properties', 'users'));
     }
 
     /**
@@ -29,15 +32,15 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        // Valider les données du formulaire
+        // Validation des données (ajoutez les règles pour tous les champs)
         $request->validate([
-            'property_id' => 'required|exists:properties,id', // Clé étrangère vers la table properties
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'property_id' => 'required|exists:properties,id',
+            'user_id' => 'required|exists:users,id', // Validation pour l'utilisateur
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
             // ... autres champs ...
         ]);
 
-        // Créer et enregistrer la réservation
         Booking::create($request->all());
 
         return redirect()->route('bookings.index')
@@ -47,33 +50,36 @@ class BookingController extends Controller
     /**
      * Affiche les détails d'une réservation spécifique.
      */
-    public function show(Booking $booking)
+    public function show(Booking $booking) // Utilisation de la résolution implicite de modèle
     {
-        return view('bookings.show', compact('booking')); // Retourne la vue avec les détails de la réservation
+        return view('bookings.show', compact('booking'));
     }
 
     /**
      * Affiche le formulaire de modification d'une réservation spécifique.
      */
-    public function edit(Booking $booking)
+    public function edit(Booking $booking) // Utilisation de la résolution implicite de modèle
     {
-        return view('bookings.edit', compact('booking')); // Retourne la vue du formulaire de modification
+        // Récupérer les propriétés et les utilisateurs pour les listes déroulantes
+        $properties = \App\Models\Property::all();
+        $users = \App\Models\User::all();
+        return view('bookings.edit', compact('booking', 'properties', 'users'));
     }
 
     /**
      * Met à jour une réservation spécifique dans la base de données.
      */
-    public function update(Request $request, Booking $booking)
+    public function update(Request $request, Booking $booking) // Utilisation de la résolution implicite de modèle
     {
-        // Valider les données du formulaire
+        // Validation des données (ajoutez les règles pour tous les champs)
         $request->validate([
-            'property_id' => 'required|exists:properties,id', // Clé étrangère vers la table properties
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'property_id' => 'required|exists:properties,id',
+            'user_id' => 'required|exists:users,id', // Validation pour l'utilisateur
+            'check_in' => 'required|date',
+            'check_out' => 'required|date|after:check_in',
             // ... autres champs ...
         ]);
 
-        // Mettre à jour la réservation
         $booking->update($request->all());
 
         return redirect()->route('bookings.index')
@@ -83,7 +89,7 @@ class BookingController extends Controller
     /**
      * Supprime une réservation spécifique de la base de données.
      */
-    public function destroy(Booking $booking)
+    public function destroy(Booking $booking) // Utilisation de la résolution implicite de modèle
     {
         $booking->delete();
 

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\HomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,26 @@ Route::get('/', function () {
 });
 
 // Routes pour les propriétés
-Route::resource('properties', PropertyController::class);
+Route::resource('properties', PropertyController::class)->names([
+    'index' => 'properties.index',
+    'create' => 'properties.create',
+    'store' => 'properties.store',
+    'show' => 'properties.show',
+    'edit' => 'properties.edit',
+    'update' => 'properties.update',
+    'destroy' => 'properties.destroy',
+]);
 
 // Routes pour les réservations
-Route::resource('bookings', BookingController::class);
+Route::resource('bookings', BookingController::class)->names([
+    'index' => 'bookings.index',
+    'create' => 'bookings.create',
+    'store' => 'bookings.store',
+    'show' => 'bookings.show',
+    'edit' => 'bookings.edit',
+    'update' => 'bookings.update',
+    'destroy' => 'bookings.destroy',
+]);
 
 // Autres routes potentielles (exemple)
 Route::get('/about', function () {
@@ -35,4 +53,11 @@ Route::get('/contact', function () {
     return view('contact'); // Vue pour la page de contact
 });
 
-// ... d'autres routes ...
+Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard'); // Ou la vue que vous souhaitez afficher pour le dashboard
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Routes d'authentification (si vous utilisez Breeze, Jetstream ou autre)
+require __DIR__.'/auth.php'; // ou le chemin vers vos routes d'authentification
