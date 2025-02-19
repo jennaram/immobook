@@ -9,25 +9,16 @@
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 </head>
 <body class="bg-gray-100">
-    <header class="bg-white p-4 shadow">
-        <nav class="container mx-auto flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold">Immobook</a>
-            <div class="flex space-x-4">
-                <a href="{{ route('properties.index') }}" class="text-gray-700 hover:text-primary">Propriétés</a>
-                <a href="{{ route('bookings.index') }}" class="text-gray-700 hover:text-primary">Réservations</a>
-                @auth
-                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-primary">Tableau de bord</a>
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-gray-700 hover:text-primary">Déconnexion</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-primary">Connexion</a>
-                    <a href="{{ route('register') }}" class="text-gray-700 hover:text-primary">Inscription</a>
-                @endauth
-            </div>
-        </nav>
-    </header>
+    <header class="bg-indigo-800 p-4 shadow">
+    <nav class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold text-white">Immobook</a>
+        <div class="flex space-x-4">
+            <a href="{{ route('properties.index') }}" class="text-gray-100 hover:text-white">Propriétés</a>
+            <a href="{{ route('bookings.index') }}" class="text-gray-100 hover:text-white">Réservations</a>
+            {{-- ... autres liens ... --}}
+        </div>
+    </nav>
+</header>
 
     <main class="container mx-auto py-8">
         @if (session('message'))
