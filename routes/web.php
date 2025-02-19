@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
 
 
 /*
@@ -56,8 +59,21 @@ Route::get('/contact', function () {
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/dashboard', function () {
-    return view('dashboard'); // Ou la vue que vous souhaitez afficher pour le dashboard
-})->middleware(['auth', 'verified'])->name('dashboard');
+    $user = Auth::user(); // Récupère l'utilisateur connecté
+    $upcomingBookings = Booking::where('user_id', $user->id)
+        ->where('start_date', '>=', now())
+        ->get();
+
+    $pastBookings = Booking::where('user_id', $user->id)
+        ->where('end_date', '<', now())
+        ->get();
+
+    return view('dashboard', compact('upcomingBookings', 'pastBookings'));
+})->middleware(['auth']);
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+                ->middleware('auth')
+                ->name('logout');
 
 // Routes d'authentification (si vous utilisez Breeze, Jetstream ou autre)
 require __DIR__.'/auth.php'; // ou le chemin vers vos routes d'authentification
