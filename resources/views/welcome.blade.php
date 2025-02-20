@@ -2,17 +2,11 @@
 
 @section('content')
     <div class="min-h-screen">
-        <header class="bg-white shadow">
-            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-2xl font-semibold text-gray-800">Immobook</div>
-                <nav class="flex space-x-4">
-                    @guest
-                        <a href="{{ route('login') }}" class="text-gray-800 hover:text-gray-600">Connexion</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="text-gray-800 hover:text-gray-600">Inscription</a>
-                        @endif
-                    @endguest
-                </nav>
+        <header class="bg-white shadow mb-8">
+            <div class="container mx-auto px-6 py-4 flex justify-center items-center">
+                <div class="text-3xl font-semibold text-gray-800 text-center"> {{-- Ajout de text-3xl et text-center --}}
+                    Avec Immobook, réservez une propriété pour votre prochain évènement !
+                </div>
             </div>
         </header>
 
@@ -55,15 +49,19 @@
                             <input type="date" name="end_date" id="end_date" class="w-full mt-2 p-2 border border-gray-300 rounded-lg">
                         </div>
                     </div>
-                    <button type="submit" class="mt-6 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Réserver</button>
+                    <div class="mt-6 flex justify-center space-x-4">  {{-- Conteneur pour centrer et espacer les boutons --}}
+    <button type="submit" class="bg-blue-500 text-black px-6 py-2 rounded-lg hover:bg-blue-600 border border-red-300">
+        Réserver
+    </button>
+
+    <a href="{{ route('bookings.create') }}" class="bg-green-500 text-black px-6 py-2 rounded-lg hover:bg-green-600 border border-blue-300">
+        Réserver une propriété
+    </a>
+</div>
                 </form>
             </div>
         </main>
 
-        <footer class="bg-white shadow mt-8">
-            <div class="container mx-auto px-6 py-4 text-center text-gray-600">
-                &copy; {{ date('Y') }} Immobook. Tous droits réservés.
-            </div>
-        </footer>
+       
     </div>
 @endsection
