@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Property; // Importez le modèle Property
+use App\Models\Property;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $properties = Property::distinct()->get(); // Utilisation de distinct()
+        // Récupérer toutes les propriétés
+        $properties = Property::all(); // Ou une logique personnalisée pour récupérer les propriétés
 
-        return view('welcome', compact('properties')); // Passez les propriétés à la vue 'welcome'
+        // Passer les propriétés à la vue
+        return view('welcome', compact('properties'));
     }
 }
