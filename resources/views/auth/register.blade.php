@@ -1,4 +1,12 @@
+@extends('layouts.app')
+
+@section('content')
 <x-guest-layout>
+    <!-- Logo -->
+    <div class="text-center mb-6">
+        <img src="{{ asset('images/immobook-logo.png') }}" alt="Logo" class="h-16 mx-auto">
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -19,23 +27,19 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
-
             <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
+                          type="password"
+                          name="password"
+                          required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
+                          type="password"
+                          name="password_confirmation" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
@@ -50,3 +54,4 @@
         </div>
     </form>
 </x-guest-layout>
+@endsection

@@ -1,4 +1,11 @@
+@extends('layouts.app')
+
+@section('content')
 <x-guest-layout>
+    <!-- Logo -->
+    <div class="text-center mb-6">
+        <img src="{{ asset('images/immobook-logo.png') }}" alt="Logo" class="h-16 mx-auto">
+    </div>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -45,3 +52,4 @@
         </div>
     </form>
 </x-guest-layout>
+@endsection
