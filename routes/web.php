@@ -19,8 +19,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+
 // Route d'accueil (corrigée)
-Route::get('/', [HomeController::class, 'index']); // <-- Utilise le contrôleur et la méthode index
+Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- Utilise le contrôleur et la méthode index
+
+
+
 
 // Routes pour les propriétés
 Route::resource('properties', PropertyController::class)->names([
