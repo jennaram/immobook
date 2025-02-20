@@ -8,22 +8,19 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Ici, vous pouvez enregistrer les routes web pour votre application. Ces
+| routes sont chargées par le RouteServiceProvider dans un groupe qui
+| contient le groupe middleware "web". Maintenant, créez quelque chose de génial !
 |
 */
 
-// Route d'accueil
-Route::get('/', function () {
-    return view('welcome'); // Ou une autre vue pour votre page d'accueil
-});
+// Route d'accueil (corrigée)
+Route::get('/', [HomeController::class, 'index']); // <-- Utilise le contrôleur et la méthode index
 
 // Routes pour les propriétés
 Route::resource('properties', PropertyController::class)->names([
@@ -56,10 +53,9 @@ Route::get('/contact', function () {
     return view('contact'); // Vue pour la page de contact
 });
 
-Route::get('/', [HomeController::class, 'index']);
-
+// Route pour le dashboard (corrigée et nommée)
 Route::get('/dashboard', function () {
-    $user = Auth::user(); // Récupère l'utilisateur connecté
+    $user = Auth::user();
     $upcomingBookings = Booking::where('user_id', $user->id)
         ->where('start_date', '>=', now())
         ->get();
@@ -69,11 +65,11 @@ Route::get('/dashboard', function () {
         ->get();
 
     return view('dashboard', compact('upcomingBookings', 'pastBookings'));
-})->middleware(['auth']);
+})->middleware(['auth'])->name('dashboard'); // <-- Nommée 'dashboard'
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('auth')
-                ->name('logout');
+    ->middleware('auth')
+    ->name('logout');
 
-// Routes d'authentification (si vous utilisez Breeze, Jetstream ou autre)
-require __DIR__.'/auth.php'; // ou le chemin vers vos routes d'authentification
+// Routes d'authentification
+require __DIR__ . '/auth.php';

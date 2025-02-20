@@ -1,10 +1,6 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Modifier la propriété
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -12,13 +8,13 @@
 
                     <form method="POST" action="{{ route('properties.update', $property) }}">
                         @csrf
-                        @method('PUT')  {{-- Important pour indiquer une mise à jour --}}
+                        @method('PUT')
 
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nom</label>
                             <input type="text" name="name" id="name" value="{{ $property->name }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -26,7 +22,7 @@
                             <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
                             <textarea name="description" id="description" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ $property->description }}</textarea>
                             @error('description')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -34,7 +30,7 @@
                             <label for="price_per_night" class="block text-gray-700 text-sm font-bold mb-2">Prix par nuit</label>
                             <input type="number" name="price_per_night" id="price_per_night" value="{{ $property->price_per_night }}" step="0.01" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             @error('price_per_night')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -52,4 +48,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

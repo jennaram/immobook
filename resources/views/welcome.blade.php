@@ -1,56 +1,38 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Immobook - Réservation de propriétés</title>
+@extends('layouts.app')
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Styles / Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="font-sans antialiased bg-gray-100">
+@section('content')
     <div class="min-h-screen">
-        <!-- En-tête -->
         <header class="bg-white shadow">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="text-2xl font-semibold text-gray-800">Immobook</div>
                 <nav class="flex space-x-4">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-gray-800 hover:text-gray-600">Tableau de bord</a>
-                    @else
+                    @guest
                         <a href="{{ route('login') }}" class="text-gray-800 hover:text-gray-600">Connexion</a>
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="text-gray-800 hover:text-gray-600">Inscription</a>
                         @endif
-                    @endauth
+                    @endguest
                 </nav>
             </div>
         </header>
 
-        <!-- Contenu Principal -->
         <main class="container mx-auto px-6 py-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-6">Propriétés disponibles</h1>
 
-            <!-- Liste des propriétés -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @foreach ($properties as $property)
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <img src="{{ $property->image_url }}" alt="{{ $property->name }}" class="w-full h-48 object-cover">
-            <div class="p-6">
-                <h2 class="text-xl font-semibold text-gray-800">{{ $property->name }}</h2>
-                <p class="text-gray-600 mt-2">{{ $property->description }}</p>
-                <p class="text-lg font-bold text-gray-800 mt-4">{{ $property->price_per_night }} €/nuit</p>
-                <a href="{{ route('properties.show', $property->id) }}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Réserver</a>
+                @foreach ($properties as $property)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="{{ $property->image_url }}" alt="{{ $property->name }}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-gray-800">{{ $property->name }}</h2>
+                            <p class="text-gray-600 mt-2">{{ $property->description }}</p>
+                            <p class="text-lg font-bold text-gray-800 mt-4">{{ $property->price_per_night }} €/nuit</p>
+                            <a href="{{ route('properties.show', $property->id) }}" class="mt-4 inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Réserver</a>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-        </div>
-    @endforeach
-</div>
 
-            <!-- Formulaire de réservation (exemple pour une propriété spécifique) -->
             <div class="mt-12 bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Réserver une propriété</h2>
                 <form action="{{ route('bookings.store') }}" method="POST">
@@ -78,12 +60,10 @@
             </div>
         </main>
 
-        <!-- Pied de page -->
         <footer class="bg-white shadow mt-8">
             <div class="container mx-auto px-6 py-4 text-center text-gray-600">
                 &copy; {{ date('Y') }} Immobook. Tous droits réservés.
             </div>
         </footer>
     </div>
-</body>
-</html>
+@endsection

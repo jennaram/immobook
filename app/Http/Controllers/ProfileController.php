@@ -9,36 +9,45 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+
+
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Affiche le formulaire de profil de l'utilisateur.
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = Auth::user(); // Récupérer l'utilisateur connecté
+
+        return view('profile.edit', compact('user')); // Passer l'utilisateur à la vue
     }
 
     /**
-     * Update the user's profile information.
+     * Met à jour les informations de profil de l'utilisateur.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        // Valider les données du formulaire
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,'.Auth::id(),
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $user = Auth::user();
 
-        $request->user()->save();
+        // Utiliser la méthode fill() pour attribuer les valeurs de la requête HTTP aux attributs du modèle
+        $user->fill($request->all()); // ou $user->fill($request->only('name', 'email')); si vous avez d'autres champs
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->save();
+
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
 
+   
+
     /**
-     * Delete the user's account.
+     * Supprime le compte de l'utilisateur.
      */
     public function destroy(Request $request): RedirectResponse
     {
