@@ -35,16 +35,19 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Création de l'utilisateur avec is_admin = false
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_admin' => false, // Par défaut, l'utilisateur n'est pas un administrateur
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Rediriger vers la page d'accueil après inscription
+        return redirect('/');
     }
 }
