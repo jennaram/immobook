@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $properties = Property::all(); // Récupérez toutes les propriétés depuis la base de données
+        $properties = Property::distinct()->get(); // Utilisation de distinct()
 
         return view('welcome', compact('properties')); // Passez les propriétés à la vue 'welcome'
     }
