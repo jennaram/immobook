@@ -7,12 +7,21 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Récupérer toutes les propriétés
-        $properties = Property::all(); // Ou une logique personnalisée pour récupérer les propriétés
+        $query = Property::query();
 
-        // Passer les propriétés à la vue
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('address', 'like', "%{$search}%");
+                 
+        }
+
+        // Récupérer les propriétés (toutes si pas de recherche, filtrées sinon)
+        $properties = $query->get();
+
         return view('welcome', compact('properties'));
     }
 }

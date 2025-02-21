@@ -8,11 +8,20 @@ use Illuminate\Http\Request;
 class PropertyController extends Controller
 {
     /**
-     * Affiche la liste des propriétés.
+     * Affiche la liste des propriétés avec la recherche.
      */
-    public function index()
+    public function index(Request $request) // Ajout de Request pour gérer la recherche
     {
-        $properties = Property::paginate(10); // Pagination pour améliorer les performances
+        $query = Property::query();
+
+        // Vérifie si une recherche a été effectuée
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%')
+                  ->orWhere('description', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $properties = $query->paginate(10); // Pagination
+
         return view('properties.index', compact('properties'));
     }
 
@@ -29,18 +38,17 @@ class PropertyController extends Controller
      */
     public function store(Request $request)
     {
-        // Validation des données (ajoutez les règles pour tous les champs)
+        // Validation des données
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string', // Exemple : description peut être nulle
-            'price_per_night' => 'required|numeric|min:0', // Exemple : prix doit être un nombre positif
+            'description' => 'nullable|string',
+            'price_per_night' => 'required|numeric|min:0',
             'address' => 'nullable|string',
             'city' => 'nullable|string',
             'postal_code' => 'nullable|string',
             'country' => 'nullable|string',
             'rooms' => 'nullable|integer|min:0',
             'surface' => 'nullable|numeric|min:0',
-            // ... autres champs ...
         ]);
 
         Property::create($request->all());
@@ -54,14 +62,13 @@ class PropertyController extends Controller
      */
     public function show(Property $property) 
     {
-        // Retourne la vue avec les détails de la propriété
         return view('properties.show', compact('property'));
     }
 
     /**
      * Affiche le formulaire de modification d'une propriété spécifique.
      */
-    public function edit(Property $property) // Utilisation de la résolution implicite de modèle
+    public function edit(Property $property)
     {
         return view('properties.edit', compact('property'));
     }
@@ -69,9 +76,8 @@ class PropertyController extends Controller
     /**
      * Met à jour une propriété spécifique dans la base de données.
      */
-    public function update(Request $request, Property $property) // Utilisation de la résolution implicite de modèle
+    public function update(Request $request, Property $property)
     {
-        // Validation des données (ajoutez les règles pour tous les champs)
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -82,7 +88,6 @@ class PropertyController extends Controller
             'country' => 'nullable|string',
             'rooms' => 'nullable|integer|min:0',
             'surface' => 'nullable|numeric|min:0',
-            // ... autres champs ...
         ]);
 
         $property->update($request->all());
@@ -94,7 +99,7 @@ class PropertyController extends Controller
     /**
      * Supprime une propriété spécifique de la base de données.
      */
-    public function destroy(Property $property) // Utilisation de la résolution implicite de modèle
+    public function destroy(Property $property)
     {
         $property->delete();
 
