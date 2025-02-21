@@ -29,10 +29,10 @@
                         <tbody>
                             @foreach ($properties as $property)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $property->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $property->description }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $property->price_per_night }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+                                    <td class="px-6 py-4 text-justify">{{ $property->name }}</td>
+                                    <td class="px-6 py-4 description-cell text-justify"> {{ $property->description }} </td>
+                                    <td class="px-6 py-4 text-justify">{{ $property->price_per_night }}</td>
+                                    <td class="px-6 py-4 text-right font-medium">
                                         <a href="{{ route('properties.show', $property) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Afficher</a>
                                         <a href="{{ route('properties.edit', $property) }}" class="text-blue-600 hover:text-blue-900 mr-2">Modifier</a>
                                         <form action="{{ route('properties.destroy', $property) }}" method="POST" class="inline">

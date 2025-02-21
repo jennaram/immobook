@@ -2,20 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 .description-container {
     position: relative;
-    max-height: 4.5em;
+    max-height: 4.5em; /* Ou max-h-[4.5em] si vous préférez la notation Tailwind */
     overflow: hidden;
     transition: max-height 0.3s ease-out;
+    padding-bottom: 2rem; /* Décalage du bouton (ajuster la valeur si nécessaire) */
 }
 
 .description-container.expanded {
-    max-height: 1000px;
+    max-height: 1000px; /* Ou max-h-[1000px] */
 }
 
 .description-content {
     margin: 0;
     padding: 0;
 }
+
+/* Dans votre fichier CSS (app.css ou un autre) */
+table td {
+    text-align: center; /* Justifie le texte dans toutes les cellules */
+}
+
+/* Styles spécifiques pour la description (si nécessaire) */
+.description-cell {
+    word-wrap: break-word; /* Permet le retour à la ligne */
+    max-width: 300px; /* Largeur maximale pour la description */
+    text-align: justify;
+}
+

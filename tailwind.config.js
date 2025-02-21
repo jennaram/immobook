@@ -4,25 +4,22 @@ import forms from '@tailwindcss/forms';
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
+        './resources/views/**/*.blade.php', // Tous les fichiers Blade
+        './resources/views/components/**/*.blade.php', // Composants Blade
+        './resources/views/layouts/**/*.blade.php',   // Layouts Blade
+        './resources/js/**/*.js', // Fichiers JavaScript (si vous utilisez Tailwind dans du JS)
+        './resources/js/**/*.vue', // Si vous utilisez Vue.js
     ],
 
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Figtree', 'sans-serif'], // Simplifié
             },
-            colors: { // This is where you add your custom colors
-                primary: '#1E40AF',
-                secondary: '#9333EA',
-                // Add more colors here as needed
-                accent: '#FACC15', // Example
-                'light-gray': '#EEEEEE', // Example with hyphen
+            colors: {
+                // ... (couleurs)
             },
         },
     },
-
     plugins: [forms],
 };
