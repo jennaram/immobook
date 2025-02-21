@@ -75,5 +75,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
+  
+
 // Routes d'authentification
 require __DIR__ . '/auth.php';
