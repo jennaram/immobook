@@ -51,5 +51,16 @@
             </x-primary-button>
         </div>
     </form>
+
+    <!-- Nouveau lien d'inscription -->
+    <div class="text-center mt-4">
+        <p class="text-sm text-gray-600">
+            {{ __("Vous n'avez pas de compte ?") }}
+            <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                {{ __('Inscrivez-vous ici') }}
+            </a>
+        </p>
+    </div>
+
 </x-guest-layout>
 @endsection

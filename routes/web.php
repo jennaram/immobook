@@ -19,34 +19,34 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-
 // Route d'accueil (corrigée)
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- Utilise le contrôleur et la méthode index
 
+// Routes pour les propriétés (restreintes aux administrateurs)
+Route::middleware('admin')->group(function () {
+    Route::resource('properties', PropertyController::class)->names([
+        'index' => 'properties.index',
+        'create' => 'properties.create',
+        'store' => 'properties.store',
+        'show' => 'properties.show',
+        'edit' => 'properties.edit',
+        'update' => 'properties.update',
+        'destroy' => 'properties.destroy',
+    ]);
+});
 
-
-
-// Routes pour les propriétés
-Route::resource('properties', PropertyController::class)->names([
-    'index' => 'properties.index',
-    'create' => 'properties.create',
-    'store' => 'properties.store',
-    'show' => 'properties.show',
-    'edit' => 'properties.edit',
-    'update' => 'properties.update',
-    'destroy' => 'properties.destroy',
-]);
-
-// Routes pour les réservations
-Route::resource('bookings', BookingController::class)->names([
-    'index' => 'bookings.index',
-    'create' => 'bookings.create',
-    'store' => 'bookings.store',
-    'show' => 'bookings.show',
-    'edit' => 'bookings.edit',
-    'update' => 'bookings.update',
-    'destroy' => 'bookings.destroy',
-]);
+// Routes pour les réservations (accessibles uniquement aux utilisateurs connectés)
+Route::middleware('auth')->group(function () {
+    Route::resource('bookings', BookingController::class)->names([
+        'index' => 'bookings.index',
+        'create' => 'bookings.create',
+        'store' => 'bookings.store',
+        'show' => 'bookings.show',
+        'edit' => 'bookings.edit',
+        'update' => 'bookings.update',
+        'destroy' => 'bookings.destroy',
+    ]);
+});
 
 // Autres routes potentielles (exemple)
 Route::get('/about', function () {
@@ -74,8 +74,6 @@ Route::get('/dashboard', function () {
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
-
-  
 
 // Routes d'authentification
 require __DIR__ . '/auth.php';

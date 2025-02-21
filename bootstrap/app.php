@@ -11,10 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Enregistrez votre middleware ici
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\IsAdmin::class, // Utilisez IsAdmin au lieu de AdminMiddleware
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
-
-    $app->withMiddleware(require base_path('routes/middleware.php'));

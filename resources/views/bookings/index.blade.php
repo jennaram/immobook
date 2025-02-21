@@ -5,11 +5,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class="mb-4">
-                        <a href="{{ route('bookings.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Ajouter une réservation
-                        </a>
-                    </div>
+                    @auth
+                        <div class="mb-4">
+                            <a href="{{ route('bookings.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Ajouter une réservation
+                            </a>
+                        </div>
+                    @endauth
 
                     @if (session('success'))
                         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -36,12 +38,16 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_out }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
                                         <a href="{{ route('bookings.show', $booking) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Afficher</a>
-                                        <a href="{{ route('bookings.edit', $booking) }}" class="text-blue-600 hover:text-blue-900 mr-2">Modifier</a>
-                                        <form action="{{ route('bookings.destroy', $booking) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Supprimer</button>
-                                        </form>
+                                        @auth
+                                            @if(Auth::user()->is_admin || Auth::user()->id === $booking->user_id)
+                                                <a href="{{ route('bookings.edit', $booking) }}" class="text-blue-600 hover:text-blue-900 mr-2">Modifier</a>
+                                                <form action="{{ route('bookings.destroy', $booking) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-red-600 hover:text-red-900">Supprimer</button>
+                                                </form>
+                                            @endif
+                                        @endauth
                                     </td>
                                 </tr>
                             @endforeach
