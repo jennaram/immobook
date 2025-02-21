@@ -18,48 +18,46 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
+                        <!-- Image de la propriété -->
+                        <div class="mb-4">
+                            <img src="{{ $property->image_url }}" alt="{{ $property->name }}" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+
+                        <!-- Description -->
                         <div class="mb-4">
                             <p class="text-gray-700"><strong>Description :</strong> {{ $property->description ?? 'Non renseignée' }}</p>
                         </div>
 
+                        <!-- Prix par nuit -->
                         <div class="mb-4">
                             <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $property->price_per_night ?? 'Non renseigné' }} €</p>
                         </div>
 
+                        <!-- Adresse -->
                         <div class="mb-4">
                             <p class="text-gray-700"><strong>Adresse :</strong> {{ $property->address ?? 'Non renseignée' }}</p>
                         </div>
 
+                        <!-- Nombre de chambres -->
                         <div class="mb-4">
-                            <p class="text-gray-700"><strong>Ville :</strong> {{ $property->city ?? 'Non renseignée' }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-gray-700"><strong>Code postal :</strong> {{ $property->postal_code ?? 'Non renseigné' }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-gray-700"><strong>Pays :</strong> {{ $property->country ?? 'Non renseigné' }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-gray-700"><strong>Nombre de pièces :</strong> {{ $property->rooms ?? 'Non renseigné' }}</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-gray-700"><strong>Superficie :</strong> {{ $property->surface ?? 'Non renseignée' }} m²</p>
-                        </div>
-
-                        <div class="mb-4">
-                            <p class="text-gray-700">
-                                <strong>Type de propriété :</strong> {{ $property->propertyType->name ?? 'Non renseigné' }}
-                            </p>
+                            <p class="text-gray-700"><strong>Nombre de chambres :</strong> {{ $property->bedrooms ?? 'Non renseigné' }}</p>
                         </div>
 
                     </div>
 
+                    <!-- Bouton "Réserver" -->
                     <div class="mt-6">
-                        @livewire('booking-manager', ['property' => $property])
+                        @auth
+                            <a href="{{ route('bookings.create', ['property_id' => $property->id]) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-black font-medium rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Réserver
+                            </a>
+                        @else
+                            <p class="text-gray-600">Vous devez être connecté pour réserver cette propriété.</p>
+                            <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800">Se connecter</a>
+                        @endauth
                     </div>
 
                 </div>

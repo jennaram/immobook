@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\Auth;
 // Route d'accueil (corrigée)
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- Utilise le contrôleur et la méthode index
 
+// Route pour afficher les détails d'une propriété
+Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
+
+Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
+
 // Routes pour les propriétés (restreintes aux administrateurs)
 Route::middleware('admin')->group(function () {
     Route::resource('properties', PropertyController::class)->names([

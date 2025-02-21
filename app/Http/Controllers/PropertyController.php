@@ -52,8 +52,9 @@ class PropertyController extends Controller
     /**
      * Affiche les détails d'une propriété spécifique.
      */
-    public function show(Property $property) // Utilisation de la résolution implicite de modèle
+    public function show(Property $property) 
     {
+        // Retourne la vue avec les détails de la propriété
         return view('properties.show', compact('property'));
     }
 

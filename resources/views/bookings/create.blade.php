@@ -6,8 +6,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <form method="POST" action="{{ route('bookings.store') }}">
-                        @csrf
+                    <form action="{{ route('bookings.store') }}" method="POST">
+    @csrf
+    <input type="hidden" name="property_id" value="{{ request('property_id') }}">
+    <!-- Autres champs du formulaire -->
+    <button type="submit" class="bg-blue-500 text-black px-4 py-2 rounded">Réserver</button>
+</form>
 
                         <!-- Sélection de la propriété -->
                         <div class="mb-4">

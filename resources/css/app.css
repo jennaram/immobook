@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.description-container {
+    position: relative;
+    max-height: 4.5em;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.description-container.expanded {
+    max-height: 1000px;
+}
+
+.description-content {
+    margin: 0;
+    padding: 0;
+}
