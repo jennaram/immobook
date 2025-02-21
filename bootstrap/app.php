@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Enregistrez votre middleware ici
         $middleware->alias([
-            'admin' => \App\Http\Middleware\IsAdmin::class, // Utilisez IsAdmin au lieu de AdminMiddleware
+            'is_admin' => \App\Http\Middleware\IsAdmin::class, // Utilisez IsAdmin au lieu de AdminMiddleware
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
