@@ -9,13 +9,13 @@
     <div class="bg-white rounded-lg shadow-md p-8 max-w-3xl mx-auto mt-8">
         <!-- Texte centré avec une taille de police augmentée et une marge en haut -->
         <p class="text-lg text-gray-700 text-center mb-6 mt-6">
-             <br>Nous sommes une équipe passionnée qui travaille dur pour vous offrir la meilleure expérience possible.
+            <br>Nous sommes une équipe passionnée qui travaille dur pour vous offrir la meilleure expérience possible.
         </p>
         <p class="text-lg text-gray-700 text-center mb-6">
             Notre mission est de simplifier la gestion des propriétés et de rendre votre séjour aussi agréable que possible.
         </p>
         <p class="text-lg text-gray-700 text-center mb-8">
-            N'hésitez pas à nous contacter si vous avez des questions ou des suggestions.
+            N'hésitez pas à <a href="{{ route('contact') }}" class="text-indigo-600 hover:text-indigo-800 underline">nous contacter</a> si vous avez des questions ou des suggestions.
         </p>
 
         <!-- Section Équipe -->

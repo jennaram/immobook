@@ -150,9 +150,23 @@
     </div>
 
     <footer class="bg-white shadow mt-8">
-        <div class="container mx-auto px-6 py-4 text-center text-gray-600">
-            &copy; {{ date('Y') }} Immobook. Tous droits réservés.
+    <div class="container mx-auto px-6 py-4 text-center text-gray-600">
+        <!-- Ligne 1 : Copyright et lien Contact -->
+        <div class="mb-2">
+            &copy; {{ date('Y') }} Immobook. Tous droits réservés. |
+            <a href="{{ route('contact') }}" class="text-gray-600 hover:text-gray-800">Contact</a>
         </div>
-    </footer>
+
+        <!-- Ligne 2 : Logo LinkedIn et texte -->
+        <div class="flex items-center justify-center space-x-2">
+            <a href="https://www.linkedin.com/in/jennabenufferamia/" target="_blank" rel="noopener noreferrer">
+                <img src="{{ asset('images/logo_linkedin.png') }}" alt="LinkedIn" class="w-6 h-6">
+            </a>
+            <a href="https://www.linkedin.com/in/jennabenufferamia/" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-gray-800">
+                Rejoignez-moi sur LinkedIn
+            </a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

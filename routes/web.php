@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,9 +57,8 @@ Route::middleware('auth')->group(function () {
 // Route pour la page "À propos"
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-Route::get('/contact', function () {
-    return view('contact'); // Vue pour la page de contact
-});
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Route pour le dashboard (corrigée et nommée)
 Route::get('/dashboard', function () {
