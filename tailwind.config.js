@@ -17,7 +17,7 @@ export default {
                 sans: ['Figtree', 'sans-serif'], // Simplifié
             },
             colors: {
-                // ... (couleurs)
+                'custom-blue': '#8ecae6',
             },
         },
     },

@@ -7,6 +7,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AboutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,10 +53,8 @@ Route::middleware('auth')->group(function () {
     ]);
 });
 
-// Autres routes potentielles (exemple)
-Route::get('/about', function () {
-    return view('about'); // Vue pour la page "À propos"
-});
+// Route pour la page "À propos"
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 Route::get('/contact', function () {
     return view('contact'); // Vue pour la page de contact
