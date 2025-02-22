@@ -19,10 +19,18 @@ class BookingController extends Controller
      * Affiche la liste des réservations.
      */
     public function index()
-    {
-        $bookings = Booking::paginate(10); // Pagination pour améliorer les performances
-        return view('bookings.index', compact('bookings'));
+{
+    // Vérifier si l'utilisateur est un administrateur
+    if (Auth::user()->is_admin) {
+        // Si l'utilisateur est un administrateur, afficher toutes les réservations
+        $bookings = Booking::with(['property', 'user'])->paginate(10);
+    } else {
+        // Sinon, afficher uniquement les réservations de l'utilisateur connecté
+        $bookings = Booking::where('user_id', Auth::id())->with(['property', 'user'])->paginate(10);
     }
+
+    return view('bookings.index', compact('bookings'));
+}
 
     /**
      * Affiche le formulaire de création d'une nouvelle réservation.
@@ -74,61 +82,67 @@ class BookingController extends Controller
      * Affiche les détails d'une réservation spécifique.
      */
     public function show(Booking $booking)
-    {
-        return view('bookings.show', compact('booking'));
+{
+    // Vérifier si l'utilisateur est un administrateur ou le propriétaire de la réservation
+    if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
+        return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour accéder à cette réservation.');
     }
+
+    return view('bookings.show', compact('booking'));
+}
 
     /**
      * Affiche le formulaire de modification d'une réservation spécifique.
      */
     public function edit(Booking $booking)
-    {
-        // Vérifier si l'utilisateur est administrateur ou propriétaire de la réservation
-        if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
-            return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour modifier cette réservation.');
-        }
-
-        // Récupérer les propriétés pour la liste déroulante
-        $properties = Property::all();
-        return view('bookings.edit', compact('booking', 'properties'));
+{
+    // Vérifier si l'utilisateur est un administrateur ou le propriétaire de la réservation
+    if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
+        return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour modifier cette réservation.');
     }
+
+    // Récupérer les propriétés pour la liste déroulante
+    $properties = Property::all();
+    return view('bookings.edit', compact('booking', 'properties'));
+}
 
     /**
      * Met à jour une réservation spécifique dans la base de données.
      */
     public function update(Request $request, Booking $booking)
-    {
-        // Vérifier si l'utilisateur est administrateur ou propriétaire de la réservation
-        if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
-            return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour modifier cette réservation.');
-        }
-
-        // Validation des données
-        $request->validate([
-            'property_id' => 'required|exists:properties,id',
-            'check_in' => 'required|date',
-            'check_out' => 'required|date|after:check_in',
-        ]);
-
-        $booking->update($request->all());
-
-        return redirect()->route('bookings.index')
-            ->with('success', 'Réservation mise à jour avec succès.');
+{
+    // Vérifier si l'utilisateur est un administrateur ou le propriétaire de la réservation
+    if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
+        return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour modifier cette réservation.');
     }
+
+    // Validation des données
+    $request->validate([
+        'property_id' => 'required|exists:properties,id',
+        'check_in' => 'required|date',
+        'check_out' => 'required|date|after:check_in',
+        
+    ]);
+
+    // Mettre à jour la réservation
+    $booking->update($request->all());
+
+    return redirect()->route('bookings.index')->with('success', 'Réservation mise à jour avec succès.');
+}
 
     /**
      * Supprime une réservation spécifique de la base de données.
      */
     public function destroy(Booking $booking)
-    {
-        // Vérifier si l'utilisateur est administrateur ou propriétaire de la réservation
-        if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
-            return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour supprimer cette réservation.');
-        }
-
-        $booking->delete();
-
-        return redirect()->route('bookings.index')
-            ->with('success', 'Réservation supprimée avec succès.');
+{
+    // Vérifier si l'utilisateur est un administrateur ou le propriétaire de la réservation
+    if (!Auth::user()->is_admin && Auth::user()->id !== $booking->user_id) {
+        return redirect()->route('bookings.index')->with('error', 'Vous n\'avez pas les droits pour supprimer cette réservation.');
     }
+
+    // Supprimer la réservation
+    $booking->delete();
+
+    return redirect()->route('bookings.index')->with('success', 'Réservation supprimée avec succès.');
+}
 }
