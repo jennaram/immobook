@@ -9,9 +9,7 @@
                     @if (auth()->user()->is_admin)
                         <div class="bg-blue-100 p-4 rounded-lg mb-6">
                             <p class="text-blue-800">Bienvenue, administrateur !</p>
-                            <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:text-blue-800">
-                                Accéder au tableau de bord administrateur
-                            </a>
+                            
                         </div>
                     @else
                         <div class="bg-green-100 p-4 rounded-lg mb-6">
