@@ -8,14 +8,12 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class BookingController extends Controller
 {
     protected function middleware(): array
     {
         return ['auth'];
     }
-
 
     /**
      * Affiche la liste des réservations.
@@ -27,25 +25,30 @@ class BookingController extends Controller
     }
 
     /**
- * Affiche le formulaire de création d'une nouvelle réservation.
- */
-public function create()
-{
-    // Récupérer les propriétés pour la liste déroulante
-    $properties = Property::all();
-    
-    // Récupérer la liste des utilisateurs pour les administrateurs
-    $users = User::all(); // N'oubliez pas d'ajouter l'import : use App\Models\User;
-    
-    return view('bookings.create', compact('properties', 'users'));
-}
+     * Affiche le formulaire de création d'une nouvelle réservation.
+     */
+    public function create(Request $request)
+    {
+        // Récupérer l'ID de la propriété depuis l'URL
+        $propertyId = $request->query('property_id');
+
+        // Récupérer la propriété si l'ID est fourni
+        $property = $propertyId ? Property::findOrFail($propertyId) : null;
+
+        // Récupérer les propriétés pour la liste déroulante
+        $properties = Property::all();
+        
+        // Récupérer la liste des utilisateurs pour les administrateurs
+        $users = User::all(); 
+        
+        return view('bookings.create', compact('property', 'properties', 'users'));
+    }
 
     /**
      * Enregistre une nouvelle réservation dans la base de données.
      */
     public function store(Request $request)
     {
-        // Validation des données
         $request->validate([
             'property_id' => 'required|exists:properties,id',
             'check_in' => 'required|date',
@@ -55,10 +58,16 @@ public function create()
         // Associer l'utilisateur connecté à la réservation
         $request->merge(['user_id' => Auth::id()]);
 
-        Booking::create($request->all());
+        // Créer la réservation
+        Booking::create([
+            'property_id' => $request->property_id,
+            'user_id' => $request->user_id,
+            'check_in' => $request->check_in,
+            'check_out' => $request->check_out,
+            'status' => 'pending', // Ajoutez une valeur par défaut pour `status`
+        ]);
 
-        return redirect()->route('bookings.index')
-            ->with('success', 'Réservation créée avec succès.');
+        return redirect()->route('bookings.index')->with('success', 'Réservation effectuée avec succès !');
     }
 
     /**

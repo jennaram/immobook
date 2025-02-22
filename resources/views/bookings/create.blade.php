@@ -5,26 +5,33 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    <h1 class="text-2xl font-bold mb-6">Réserver une propriété</h1>
 
                     <form action="{{ route('bookings.store') }}" method="POST">
-    @csrf
-    <input type="hidden" name="property_id" value="{{ request('property_id') }}">
-    <!-- Autres champs du formulaire -->
-    <button type="submit" class="bg-blue-500 text-black px-4 py-2 rounded">Réserver</button>
-</form>
+                        @csrf
 
-                        <!-- Sélection de la propriété -->
-                        <div class="mb-4">
-                            <label for="property_id" class="block text-gray-700 text-sm font-bold mb-2">Propriété</label>
-                            <select name="property_id" id="property_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
-                                @foreach ($properties as $property)
-                                    <option value="{{ $property->id }}">{{ $property->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('property_id')
-                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <!-- Champ caché pour l'ID de la propriété -->
+                        <input type="hidden" name="property_id" value="{{ request('property_id') }}">
+
+                        <!-- Afficher le nom de la propriété si elle est déjà sélectionnée -->
+                        @if (request('property_id'))
+    <div class="mb-4">
+        <p class="text-gray-700"><strong>Propriété :</strong> {{ $property->name }}</p>
+    </div>
+@else
+    <!-- Sélection de la propriété -->
+    <div class="mb-4">
+        <label for="property_id" class="block text-gray-700 text-sm font-bold mb-2">Propriété</label>
+        <select name="property_id" id="property_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+            @foreach ($properties as $property)
+                <option value="{{ $property->id }}">{{ $property->name }}</option>
+            @endforeach
+        </select>
+        @error('property_id')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+        @enderror
+    </div>
+@endif
 
                         <!-- Sélection de l'utilisateur (uniquement pour les administrateurs) -->
                         @if (auth()->user()->is_admin)
@@ -46,7 +53,7 @@
 
                         <!-- Date de check-in -->
                         <div class="mb-4">
-                            <label for="check_in" class="block text-gray-700 text-sm font-bold mb-2">Check-in</label>
+                            <label for="check_in" class="block text-gray-700 text-sm font-bold mb-2">Date d'arrivée</label>
                             <input type="date" name="check_in" id="check_in" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             @error('check_in')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -55,7 +62,7 @@
 
                         <!-- Date de check-out -->
                         <div class="mb-4">
-                            <label for="check_out" class="block text-gray-700 text-sm font-bold mb-2">Check-out</label>
+                            <label for="check_out" class="block text-gray-700 text-sm font-bold mb-2">Date de départ</label>
                             <input type="date" name="check_out" id="check_out" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                             @error('check_out')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -67,12 +74,11 @@
                             <a href="{{ url('/') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Annuler
                             </a>
-                            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Enregistrer
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                Réserver
                             </button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>

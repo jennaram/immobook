@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    protected $fillable = ['user_id', 'property_id', 'start_date', 'end_date'];
+    protected $fillable = ['user_id', 'property_id', 'check-in', 'check-out'];
 
     public function user(): BelongsTo
     {

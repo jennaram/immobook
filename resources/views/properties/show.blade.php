@@ -50,20 +50,26 @@
 
                             <!-- Bouton "Réserver" sous le prix -->
                             <div class="mt-4 flex justify-center">
-                                @auth
-                                    <a href="{{ route('bookings.create', ['property_id' => $property->id]) }}" class="inline-flex items-center px-4 py-2 bg-gray-600 text-black font-medium rounded-lg hover:bg-gray-700 transition duration-300 transform hover:scale-105 shadow-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        Réserver
-                                    </a>
-                                @else
-                                    <div class="text-center mt-2">
-                                        <p class="text-gray-600">Vous devez être connecté pour réserver cette propriété.</p>
-                                        <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800">Se connecter</a>
-                                    </div>
-                                @endauth
-                            </div>
+    @auth
+        <!-- Utilisateur connecté : rediriger vers le formulaire de réservation -->
+        <a href="{{ route('bookings.create', ['property_id' => $property->id]) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Réserver
+        </a>
+    @else
+        <!-- Utilisateur non connecté : afficher un message avec des liens de connexion et d'inscription -->
+        <div class="text-center mt-2">
+            <p class="text-gray-600">Vous devez être connecté pour réserver cette propriété.</p>
+            <div class="mt-2 space-x-4">
+                <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800">Se connecter</a>
+                <span class="text-gray-400">|</span>
+                <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-800">S'inscrire</a>
+            </div>
+        </div>
+    @endauth
+</div>
                         </div>
 
                         <!-- Adresse -->
