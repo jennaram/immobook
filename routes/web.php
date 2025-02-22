@@ -52,6 +52,12 @@ Route::middleware('auth')->group(function () {
         'update' => 'bookings.update',
         'destroy' => 'bookings.destroy',
     ]);
+
+    Route::middleware(['auth', 'is_admin'])->group(function () {
+        Route::get('/admin/dashboard', function () {
+            return view('admin.dashboard'); // Assurez-vous que cette vue existe
+        })->name('IsAdmin.dashboard');
+    });
 });
 
 // Route pour la page "À propos"
@@ -64,11 +70,11 @@ Route::post('/contact', [ContactController::class, 'submit'])->name('contact.sub
 Route::get('/dashboard', function () {
     $user = Auth::user();
     $upcomingBookings = Booking::where('user_id', $user->id)
-        ->where('start_date', '>=', now())
+        ->where('check_in', '>=', now())
         ->get();
 
     $pastBookings = Booking::where('user_id', $user->id)
-        ->where('end_date', '<', now())
+        ->where('check_out', '<', now())
         ->get();
 
     return view('dashboard', compact('upcomingBookings', 'pastBookings'));
