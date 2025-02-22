@@ -41,6 +41,12 @@ Route::middleware('is_admin')->group(function () {
     ]);
 });
 
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard'); // Assurez-vous que cette vue existe
+    })->name('IsAdmin.dashboard');
+});
+
 // Routes pour les réservations (accessibles uniquement aux utilisateurs connectés)
 Route::middleware('auth')->group(function () {
     Route::resource('bookings', BookingController::class)->names([
