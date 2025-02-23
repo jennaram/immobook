@@ -182,39 +182,37 @@
 </footer>
 <!-- Script JavaScript pour la gestion des favoris -->
     <script>
-        // Fonction pour basculer un favori
-        function toggleFavorite(propertyId) {
-            fetch('{{ route('favorites.toggle') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({ property_id: propertyId }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Mettre à jour le compteur de favoris
-                document.getElementById('favorite-count').textContent = data.count;
-
-                // Ajouter ou supprimer la classe "text-red-500" pour l'icône
-                const heartIcon = document.querySelector(`[data-property-id="${propertyId}"]`);
-                if (heartIcon) {
-                    heartIcon.classList.toggle('text-red-500', data.action === 'added');
-                }
-            });
+    // Fonction pour basculer un favori
+    function toggleFavorite(propertyId) {
+    fetch('{{ route('favorites.toggle') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+        body: JSON.stringify({ property_id: propertyId }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        // Mettre à jour le compteur de favoris
+        document.getElementById('favorite-count').textContent = data.count;
 
-        // Charger le nombre de favoris au chargement de la page
-        document.addEventListener('DOMContentLoaded', () => {
-            if ({{ Auth::check() ? 'true' : 'false' }}) {
-                fetch('{{ route('favorites.count') }}')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('favorite-count').textContent = data.count;
-                    });
-            }
-        });
-    </script>
+        // Ajouter ou supprimer la classe "text-red-500" pour l'icône
+        const heartIcon = document.querySelector(`[data-property-id="${propertyId}"]`);
+        if (heartIcon) {
+            heartIcon.classList.toggle('text-red-500', data.action === 'added');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de la mise à jour des favoris :', error);
+    });
+}
+    });
+</script>
 </body>
 </html>

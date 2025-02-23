@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Property;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-
     // Afficher les propriétés favorites
     public function index()
     {
@@ -47,7 +47,7 @@ class FavoriteController extends Controller
         }
 
         // Retourner le nombre de favoris mis à jour
-        $count = $user->favorites()->count();
+        $count = $user->favoriteProperties()->count();
 
         return response()->json([
             'action' => $action,
@@ -59,7 +59,7 @@ class FavoriteController extends Controller
     public function count()
     {
         $user = Auth::user();
-        $count = $user->favorites()->count();
+        $count = $user->favoriteProperties()->count();
 
         return response()->json([
             'count' => $count,

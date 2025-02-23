@@ -14,13 +14,15 @@ class Property extends Model
         return $this->hasMany(Booking::class);
     }
 
+    // Relation avec les favoris
     public function favorites()
-{
-    return $this->hasMany(Favorite::class);
-}
+    {
+        return $this->hasMany(Favorite::class);
+    }
 
-public function favoritedByUsers()
-{
-    return $this->belongsToMany(User::class, 'favorites');
-}
+    // Relation avec les utilisateurs qui ont mis cette propriété en favori
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
 }
