@@ -26,6 +26,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisateur</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-in</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-out</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix total</th> <!-- Nouvelle colonne -->
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -34,8 +35,9 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->property->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->user->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_in }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_out }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_in->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_out->format('d/m/Y') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->total_price ?? 'N/A' }} €</td> <!-- Affichage du prix total -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
                                         <a href="{{ route('bookings.show', $booking) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Afficher</a>
                                         @auth
