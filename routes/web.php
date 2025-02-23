@@ -74,17 +74,24 @@ Route::post('/contact', [ContactController::class, 'submit'])->name('contact.sub
 
 // Route pour le dashboard (corrigée et nommée)
 Route::get('/dashboard', function () {
+    if (!Auth::user()->is_admin) {
+        return redirect()->route('home')->with('error', 'Vous devez être administrateur pour accéder à cette page.');
+    }
+
     $user = Auth::user();
-    $upcomingBookings = Booking::where('user_id', $user->id)
-        ->where('check_in', '>=', now())
-        ->get();
 
-    $pastBookings = Booking::where('user_id', $user->id)
-        ->where('check_out', '<', now())
-        ->get();
+   // Récupérer les réservations à venir (check_in >= aujourd'hui)
+   $upcomingBookings = Booking::where('check_in', '>=', now())
+   ->orderBy('check_in')
+   ->get();
 
-    return view('dashboard', compact('upcomingBookings', 'pastBookings'));
-})->middleware(['auth'])->name('dashboard'); // <-- Nommée 'dashboard'
+// Récupérer les réservations passées (check_out < aujourd'hui)
+$pastBookings = Booking::where('check_out', '<', now())
+   ->orderBy('check_out', 'desc')
+   ->get();
+
+return view('dashboard', compact('upcomingBookings', 'pastBookings'));
+})->middleware(['auth'])->name('dashboard');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')

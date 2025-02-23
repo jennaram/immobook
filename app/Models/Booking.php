@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    protected $fillable = ['user_id', 'property_id', 'check-in', 'check-out'];
+    protected $fillable = ['user_id', 'property_id', 'check_in', 'check_out'];
+
+    // Utiliser $casts pour convertir les colonnes en objets Carbon
+    protected $casts = [
+        'check_in' => 'date',
+        'check_out' => 'date',
+    ];
 
     public function user(): BelongsTo
     {
