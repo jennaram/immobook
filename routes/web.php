@@ -82,13 +82,15 @@ Route::get('/dashboard', function () {
 
    // Récupérer les réservations à venir (check_in >= aujourd'hui)
    $upcomingBookings = Booking::where('check_in', '>=', now())
-   ->orderBy('check_in')
-   ->get();
+    ->with('property') // Charger la relation property
+    ->orderBy('check_in')
+    ->get();
 
 // Récupérer les réservations passées (check_out < aujourd'hui)
 $pastBookings = Booking::where('check_out', '<', now())
-   ->orderBy('check_out', 'desc')
-   ->get();
+    ->with('property') // Charger la relation property
+    ->orderBy('check_out', 'desc')
+    ->get();
 
 return view('dashboard', compact('upcomingBookings', 'pastBookings'));
 })->middleware(['auth'])->name('dashboard');

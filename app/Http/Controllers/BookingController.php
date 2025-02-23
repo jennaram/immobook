@@ -62,19 +62,33 @@ class BookingController extends Controller
             'check_in' => 'required|date',
             'check_out' => 'required|date|after:check_in',
         ]);
-
+    
         // Associer l'utilisateur connecté à la réservation
         $request->merge(['user_id' => Auth::id()]);
-
+    
+        // Récupérer la propriété
+        $property = Property::findOrFail($request->property_id);
+    
+        // Convertir les dates en objets Carbon
+        $checkIn = \Carbon\Carbon::parse($request->check_in);
+        $checkOut = \Carbon\Carbon::parse($request->check_out);
+    
+        // Calculer le nombre de nuits
+        $nights = $checkIn->diffInDays($checkOut);
+    
+        // Calculer le prix total
+        $totalPrice = $nights * $property->price_per_night;
+    
         // Créer la réservation
         Booking::create([
             'property_id' => $request->property_id,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
             'check_in' => $request->check_in,
             'check_out' => $request->check_out,
-            'status' => 'pending', // Ajoutez une valeur par défaut pour `status`
+            'total_price' => $totalPrice, // Enregistrer le prix total
+            'status' => 'pending', // Valeur par défaut pour `status`
         ]);
-
+    
         return redirect()->route('bookings.index')->with('success', 'Réservation effectuée avec succès !');
     }
 
@@ -121,11 +135,28 @@ class BookingController extends Controller
         'property_id' => 'required|exists:properties,id',
         'check_in' => 'required|date',
         'check_out' => 'required|date|after:check_in',
-        
     ]);
 
+    // Récupérer la propriété
+    $property = Property::findOrFail($request->property_id);
+
+    // Convertir les dates en objets Carbon
+    $checkIn = \Carbon\Carbon::parse($request->check_in);
+    $checkOut = \Carbon\Carbon::parse($request->check_out);
+
+    // Calculer le nombre de nuits
+    $nights = $checkIn->diffInDays($checkOut);
+
+    // Calculer le prix total
+    $totalPrice = $nights * $property->price_per_night;
+
     // Mettre à jour la réservation
-    $booking->update($request->all());
+    $booking->update([
+        'property_id' => $request->property_id,
+        'check_in' => $request->check_in,
+        'check_out' => $request->check_out,
+        'total_price' => $totalPrice, // Mettre à jour le prix total
+    ]);
 
     return redirect()->route('bookings.index')->with('success', 'Réservation mise à jour avec succès.');
 }

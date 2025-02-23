@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    protected $fillable = ['user_id', 'property_id', 'check_in', 'check_out'];
+    protected $fillable = ['user_id', 'property_id', 'check_in', 'check_out', 'total_price'];
 
     // Utiliser $casts pour convertir les colonnes en objets Carbon
     protected $casts = [

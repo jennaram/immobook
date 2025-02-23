@@ -71,7 +71,7 @@
                                                     <td class="py-2 px-4 border-b">{{ $booking->property->name }}</td>
                                                     <td class="py-2 px-4 border-b">{{ $booking->check_in->format('d/m/Y') }}</td>
                                                     <td class="py-2 px-4 border-b">{{ $booking->check_out->format('d/m/Y') }}</td>
-                                                    <td class="py-2 px-4 border-b">{{ $booking->total_price }} €</td>
+                                                    <td class="py-2 px-4 border-b">{{ $booking->total_price ?? 'N/A' }} €</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
