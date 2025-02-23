@@ -36,6 +36,18 @@
                     </div>
                 </div>
 
+                <!-- favoris-->
+    <div class="flex items-center">
+        <a href="{{ route('favorites.index') }}" class="relative text-gray-700 hover:text-red-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span id="favorite-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                {{ Auth::check() ? Auth::user()->favorites()->count() : 0 }}
+            </span>
+        </a>
+    </div>
+
                 <!-- Barre de recherche -->
                 <div class="flex items-center">
                     <form action="{{ route('home') }}" method="GET" class="relative flex items-center">
@@ -168,5 +180,41 @@
         </div>
     </div>
 </footer>
+<!-- Script JavaScript pour la gestion des favoris -->
+    <script>
+        // Fonction pour basculer un favori
+        function toggleFavorite(propertyId) {
+            fetch('{{ route('favorites.toggle') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ property_id: propertyId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mettre à jour le compteur de favoris
+                document.getElementById('favorite-count').textContent = data.count;
+
+                // Ajouter ou supprimer la classe "text-red-500" pour l'icône
+                const heartIcon = document.querySelector(`[data-property-id="${propertyId}"]`);
+                if (heartIcon) {
+                    heartIcon.classList.toggle('text-red-500', data.action === 'added');
+                }
+            });
+        }
+
+        // Charger le nombre de favoris au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            if ({{ Auth::check() ? 'true' : 'false' }}) {
+                fetch('{{ route('favorites.count') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('favorite-count').textContent = data.count;
+                    });
+            }
+        });
+    </script>
 </body>
 </html>

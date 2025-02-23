@@ -54,4 +54,14 @@ class User extends Authenticatable
             'is_admin' => 'boolean', // Assurez-vous que ce champ est casté en booléen
         ];
     }
+
+    public function favorites()
+{
+    return $this->hasMany(Favorite::class);
+}
+
+public function favoriteProperties()
+{
+    return $this->belongsToMany(Property::class, 'favorites');
+}
 }

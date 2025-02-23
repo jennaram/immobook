@@ -9,6 +9,7 @@ use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,24 +81,36 @@ Route::get('/dashboard', function () {
 
     $user = Auth::user();
 
-   // Récupérer les réservations à venir (check_in >= aujourd'hui)
-   $upcomingBookings = Booking::where('check_in', '>=', now())
-    ->with('property') // Charger la relation property
-    ->orderBy('check_in')
-    ->get();
+    // Récupérer les réservations à venir (check_in >= aujourd'hui)
+    $upcomingBookings = Booking::where('check_in', '>=', now())
+        ->with('property') // Charger la relation property
+        ->orderBy('check_in')
+        ->get();
 
-// Récupérer les réservations passées (check_out < aujourd'hui)
-$pastBookings = Booking::where('check_out', '<', now())
-    ->with('property') // Charger la relation property
-    ->orderBy('check_out', 'desc')
-    ->get();
+    // Récupérer les réservations passées (check_out < aujourd'hui)
+    $pastBookings = Booking::where('check_out', '<', now())
+        ->with('property') // Charger la relation property
+        ->orderBy('check_out', 'desc')
+        ->get();
 
-return view('dashboard', compact('upcomingBookings', 'pastBookings'));
+    return view('dashboard', compact('upcomingBookings', 'pastBookings'));
 })->middleware(['auth'])->name('dashboard');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+// Routes pour la gestion des favoris (accessibles uniquement aux utilisateurs connectés)
+Route::middleware('auth')->group(function () {
+    // Ajouter ou supprimer un favori
+    Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+
+    // Récupérer le nombre de favoris
+    Route::get('/favorites/count', [FavoriteController::class, 'count'])->name('favorites.count');
+
+    // Afficher la page des favoris
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+});
 
 // Routes d'authentification
 require __DIR__ . '/auth.php';
