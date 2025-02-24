@@ -10,16 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::table('bookings', function (Blueprint $table) {
-        $table->dropColumn('status');
-    });
-}
+    {
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
+    }
 
-public function down()
-{
-    Schema::table('bookings', function (Blueprint $table) {
-        $table->string('status')->default('pending');
-    });
-}
+    public function down()
+    {
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->string('status')->default('pending');
+        });
+    }
 };

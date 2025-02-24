@@ -16,7 +16,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('properties', function (Blueprint $table) {
-            $table->string('address')->nullable(false)->change();// On remet en required
+            $table->string('address')->nullable(false)->change(); // On remet en required
         });
     }
 };

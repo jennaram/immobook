@@ -7,7 +7,8 @@
                 <div class="p-6 text-gray-900">
 
                     <div class="mb-4">
-                        <a href="{{ route('bookings.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                        <a href="{{ route('bookings.index') }}"
+                            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                             Retour à la liste
                         </a>
                     </div>
@@ -30,8 +31,10 @@
 
                     @if ($booking->property)
                         <div class="mb-4">
-                            <p class="text-gray-700"><strong>Description de la propriété :</strong> {{ $booking->property->description }}</p>
-                            <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $booking->property->price_per_night }}</p>
+                            <p class="text-gray-700"><strong>Description de la propriété :</strong>
+                                {{ $booking->property->description }}</p>
+                            <p class="text-gray-700"><strong>Prix par nuit :</strong>
+                                {{ $booking->property->price_per_night }}</p>
                         </div>
                     @endif
 

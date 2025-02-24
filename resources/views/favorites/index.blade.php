@@ -15,9 +15,11 @@
                                 <div class="border rounded-lg p-4 hover:shadow-lg transition-shadow">
                                     <h2 class="text-xl font-semibold">{{ $favorite->property->name }}</h2>
                                     <p class="text-gray-700">{{ $favorite->property->description }}</p>
-                                    <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $favorite->property->price_per_night }} €</p>
+                                    <p class="text-gray-700"><strong>Prix par nuit :</strong>
+                                        {{ $favorite->property->price_per_night }} €</p>
                                     <div class="mt-4">
-                                        <a href="{{ route('properties.show', $favorite->property) }}" class="text-blue-600 hover:text-blue-800">Voir plus</a>
+                                        <a href="{{ route('properties.show', $favorite->property) }}"
+                                            class="text-blue-600 hover:text-blue-800">Voir plus</a>
                                     </div>
                                 </div>
                             @endforeach

@@ -1,24 +1,35 @@
 /.phpunit.cache
+/.phpunit.result.cache
+
+# Dépendances et builds
 /node_modules
+/vendor
 /public/build
 /public/hot
+
+# Stockage et cache
 /public/storage
-/storage/*.key
-/storage/pail
-/vendor
+/storage/*
+!storage/.gitignore
+/bootstrap/cache/*
+!bootstrap/cache/.gitignore
+
+# Environnements et secrets
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+.env.*
+/auth.json
+
+# Logs et erreurs
 npm-debug.log
 yarn-error.log
-/auth.json
+Homestead.json
+Homestead.yaml
+.DS_Store
+
+# Éditeurs et outils spécifiques
 /.fleet
 /.idea
 /.nova
 /.vscode
 /.zed
-.DS_Store
+.phpactor.json

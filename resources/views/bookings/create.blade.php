@@ -17,15 +17,20 @@
                         @if (request('property_id'))
                             <div class="mb-4">
                                 <p class="text-gray-700"><strong>Propriété :</strong> {{ $property->name }}</p>
-                                <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $property->price_per_night }} €</p>
+                                <p class="text-gray-700"><strong>Prix par nuit :</strong> {{ $property->price_per_night }} €
+                                </p>
                             </div>
                         @else
                             <!-- Sélection de la propriété -->
                             <div class="mb-4">
-                                <label for="property_id" class="block text-gray-700 text-sm font-bold mb-2">Propriété</label>
-                                <select name="property_id" id="property_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                <label for="property_id"
+                                    class="block text-gray-700 text-sm font-bold mb-2">Propriété</label>
+                                <select name="property_id" id="property_id"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    required>
                                     @foreach ($properties as $property)
-                                        <option value="{{ $property->id }}" data-price="{{ $property->price_per_night }}">{{ $property->name }}</option>
+                                        <option value="{{ $property->id }}" data-price="{{ $property->price_per_night }}">
+                                            {{ $property->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('property_id')
@@ -38,7 +43,9 @@
                         @if (auth()->user()->is_admin)
                             <div class="mb-4">
                                 <label for="user_id" class="block text-gray-700 text-sm font-bold mb-2">Utilisateur</label>
-                                <select name="user_id" id="user_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                <select name="user_id" id="user_id"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    required>
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
@@ -55,7 +62,9 @@
                         <!-- Date de check-in -->
                         <div class="mb-4">
                             <label for="check_in" class="block text-gray-700 text-sm font-bold mb-2">Date d'arrivée</label>
-                            <input type="date" name="check_in" id="check_in" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <input type="date" name="check_in" id="check_in"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required>
                             @error('check_in')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -64,7 +73,9 @@
                         <!-- Date de check-out -->
                         <div class="mb-4">
                             <label for="check_out" class="block text-gray-700 text-sm font-bold mb-2">Date de départ</label>
-                            <input type="date" name="check_out" id="check_out" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                            <input type="date" name="check_out" id="check_out"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                required>
                             @error('check_out')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -77,10 +88,12 @@
 
                         <!-- Boutons -->
                         <div class="flex items-center justify-between">
-                            <a href="{{ url('/') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ url('/') }}"
+                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Annuler
                             </a>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button type="submit"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Réserver
                             </button>
                         </div>

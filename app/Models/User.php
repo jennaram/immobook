@@ -15,9 +15,9 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     public function bookings()
-{
-    return $this->hasMany(Booking::class);
-}
+    {
+        return $this->hasMany(Booking::class);
+    }
 
     /**æ
      * The attributes that are mass assignable.
@@ -56,12 +56,12 @@ class User extends Authenticatable
     }
 
     public function favorites()
-{
-    return $this->hasMany(Favorite::class);
-}
+    {
+        return $this->hasMany(Favorite::class);
+    }
 
-public function favoriteProperties()
-{
-    return $this->belongsToMany(Property::class, 'favorites');
-}
+    public function favoriteProperties()
+    {
+        return $this->belongsToMany(Property::class, 'favorites');
+    }
 }

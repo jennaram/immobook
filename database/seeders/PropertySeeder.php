@@ -19,7 +19,7 @@ class PropertySeeder extends Seeder
             'bedrooms' => 5,
             'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Remplacez par une URL réelle
         ]);
-        
+
         // Propriété 01
         Property::create([
             'name' => 'Bungalow à Sainte-Anne en Guadeloupe',
@@ -29,7 +29,7 @@ class PropertySeeder extends Seeder
             'bedrooms' => 5,
             'image_url' => 'https://plus.unsplash.com/premium_photo-1681922761648-d5e2c3972982?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Remplacez par une URL réelle
         ]);
-        
+
         // Propriété 1
         Property::create([
             'name' => 'Maison de charme à la campagne',

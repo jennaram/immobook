@@ -6,7 +6,8 @@
             <!-- Filtres et tris alignés à droite -->
             <div class="flex justify-end space-x-4 mb-6">
                 <!-- Filtre par type de propriété -->
-                <select id="filter-by-type" class="px-3 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="filter-by-type"
+                    class="px-3 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="all">Tous les types</option>
                     <option value="maison">Maison</option>
                     <option value="appartement">Appartement</option>
@@ -14,12 +15,14 @@
                     <option value="autre">Autre</option>
                 </select>
                 <!-- Tri par prix -->
-                <select id="sort-by" class="px-3 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <select id="sort-by"
+                    class="px-3 py-1.5 border border-gray-300 rounded-md text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="price-asc">Prix croissant</option>
                     <option value="price-desc">Prix décroissant</option>
                 </select>
                 <!-- Bouton Réinitialiser -->
-                <button id="reset-filters" class="px-3 py-1.5 bg-gray-100 border border-gray-300 rounded-md text-sm shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <button id="reset-filters"
+                    class="px-3 py-1.5 bg-gray-100 border border-gray-300 rounded-md text-sm shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     Réinitialiser
                 </button>
             </div>
@@ -28,10 +31,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="properties-container">
                 @foreach ($properties as $property)
                     <div class="property bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
-                         data-price="{{ $property->price_per_night }}"
-                         data-type="{{ strpos(strtolower($property->name), 'maison') !== false ? 'maison' : 
-                                    (strpos(strtolower($property->name), 'appartement') !== false ? 'appartement' : 
-                                    (strpos(strtolower($property->name), 'villa') !== false ? 'villa' : 'autre')) }}">
+                        data-price="{{ $property->price_per_night }}"
+                        data-type="{{ strpos(strtolower($property->name), 'maison') !== false
+                            ? 'maison'
+                            : (strpos(strtolower($property->name), 'appartement') !== false
+                                ? 'appartement'
+                                : (strpos(strtolower($property->name), 'villa') !== false
+                                    ? 'villa'
+                                    : 'autre')) }}">
                         <img src="{{ $property->image_url }}" alt="{{ $property->name }}" class="w-full h-48 object-cover">
                         <div class="p-6">
                             <h2 class="text-xl font-semibold text-gray-800">{{ $property->name }}</h2>
@@ -42,11 +49,9 @@
                                         {{ $property->description }}
                                     </p>
                                 </div>
-                                <button 
-                                    onclick="toggleDescription({{ $property->id }})"
+                                <button onclick="toggleDescription({{ $property->id }})"
                                     class="text-blue-600 hover:text-blue-800 text-sm mt-2 focus:outline-none read-more-btn"
-                                    id="btn-{{ $property->id }}"
-                                >
+                                    id="btn-{{ $property->id }}">
                                     Lire la suite
                                 </button>
                             </div>
@@ -56,9 +61,12 @@
                                     <p class="text-lg font-bold text-gray-800">{{ $property->price_per_night }} €/nuit</p>
                                     <p class="text-sm text-gray-600">{{ $property->bedrooms }} chambres</p>
                                 </div>
-                                <a href="{{ route('properties.show', $property) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-black font-medium rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <a href="{{ route('properties.show', $property) }}"
+                                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-black font-medium rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     Voir les détails
                                 </a>
@@ -76,7 +84,7 @@
         function toggleDescription(propertyId) {
             const container = document.getElementById(`description-${propertyId}`);
             const button = document.getElementById(`btn-${propertyId}`);
-            
+
             if (container.classList.contains('expanded')) {
                 container.classList.remove('expanded');
                 button.textContent = 'Lire la suite';
@@ -91,7 +99,7 @@
             document.querySelectorAll('.description-container').forEach(container => {
                 const content = container.querySelector('.description-content');
                 const button = container.nextElementSibling;
-                
+
                 if (content.scrollHeight <= container.clientHeight) {
                     button.style.display = 'none';
                 }
@@ -148,6 +156,4 @@
             });
         });
     </script>
-
-
 @endsection

@@ -14,9 +14,8 @@ class HomeController extends Controller
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
             $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
-                 
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%");
         }
 
         // Récupérer les propriétés (toutes si pas de recherche, filtrées sinon)

@@ -30,8 +30,8 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-         // Créer ou mettre à jour un utilisateur non administrateur
-         User::updateOrCreate(
+        // Créer ou mettre à jour un utilisateur non administrateur
+        User::updateOrCreate(
             ['email' => 'ethan@example.com'], // Critère de recherche
             [
                 'name' => 'ethan', // Nom de l'utilisateur

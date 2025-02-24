@@ -31,7 +31,7 @@ class ProfileController extends Controller
         // Valider les données du formulaire
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.Auth::id(),
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
         ]);
 
         $user = Auth::user();
@@ -44,7 +44,7 @@ class ProfileController extends Controller
         return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
 
-   
+
 
     /**
      * Supprime le compte de l'utilisateur.

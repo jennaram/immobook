@@ -17,7 +17,7 @@ class PropertyController extends Controller
         // Vérifie si une recherche a été effectuée
         if ($request->has('search') && !empty($request->search)) {
             $query->where('name', 'LIKE', '%' . $request->search . '%')
-                  ->orWhere('description', 'LIKE', '%' . $request->search . '%');
+                ->orWhere('description', 'LIKE', '%' . $request->search . '%');
         }
 
         $properties = $query->paginate(10); // Pagination
@@ -60,7 +60,7 @@ class PropertyController extends Controller
     /**
      * Affiche les détails d'une propriété spécifique.
      */
-    public function show(Property $property) 
+    public function show(Property $property)
     {
         return view('properties.show', compact('property'));
     }

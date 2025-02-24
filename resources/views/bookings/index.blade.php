@@ -7,7 +7,8 @@
                 <div class="p-6 text-gray-900">
                     @auth
                         <div class="mb-4">
-                            <a href="{{ route('bookings.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <a href="{{ route('bookings.create') }}"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                 Ajouter une réservation
                             </a>
                         </div>
@@ -22,12 +23,18 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Propriété</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisateur</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-in</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Check-out</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix total</th> <!-- Nouvelle colonne -->
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Propriété</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Utilisateur</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Check-in</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Check-out</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Prix total</th> <!-- Nouvelle colonne -->
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,16 +44,21 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_in->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->check_out->format('d/m/Y') }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->total_price ?? 'N/A' }} €</td> <!-- Affichage du prix total -->
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->total_price ?? 'N/A' }} €</td>
+                                    <!-- Affichage du prix total -->
                                     <td class="px-6 py-4 whitespace-nowrap text-right font-medium">
-                                        <a href="{{ route('bookings.show', $booking) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Afficher</a>
+                                        <a href="{{ route('bookings.show', $booking) }}"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-2">Afficher</a>
                                         @auth
-                                            @if(Auth::user()->is_admin || Auth::user()->id === $booking->user_id)
-                                                <a href="{{ route('bookings.edit', $booking) }}" class="text-blue-600 hover:text-blue-900 mr-2">Modifier</a>
-                                                <form action="{{ route('bookings.destroy', $booking) }}" method="POST" class="inline">
+                                            @if (Auth::user()->is_admin || Auth::user()->id === $booking->user_id)
+                                                <a href="{{ route('bookings.edit', $booking) }}"
+                                                    class="text-blue-600 hover:text-blue-900 mr-2">Modifier</a>
+                                                <form action="{{ route('bookings.destroy', $booking) }}" method="POST"
+                                                    class="inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900">Supprimer</button>
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-900">Supprimer</button>
                                                 </form>
                                             @endif
                                         @endauth
